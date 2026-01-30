@@ -1,0 +1,306 @@
+﻿@model Lab_Management_System.Models.ViewModels.CreateBillViewModel
+
+@{
+    ViewData["Title"] = "Create Full Bill";
+}
+
+<!-- ================= SELECT2 CSS ================= -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    /* Fix Bootstrap + Select2 conflict */
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-selection--multiple {
+        min-height: 38px;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        padding: 4px;
+    }
+
+    .select2-selection__choice {
+        background-color: #0d6efd;
+        border: none;
+        color: white;
+        padding: 2px 8px;
+        margin-top: 4px;
+        border-radius: 20px !important;
+        padding: 2px 10px !important;
+    }
+
+    .select2-selection__choice__remove {
+        color: white;
+        margin-right: 6px;
+    }
+
+</style>
+
+<div class="container mt-4 mb-5">
+
+    <h3 class="fw-bold mb-4">🧾 Create Full Bill</h3>
+
+    <form asp-action="CreateFullBill" method="post" id="createBillForm">
+
+        <!-- ================= PATIENT INFO ================= -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header fw-bold">👤 Patient Information</div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Title</label>
+                        <select id="gender" class="form-select" name="Gender">
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Miss">Miss</option>
+                            <option value="Baby">Baby</option>
+                            <option value="Master">Master</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Patient Name *</label>
+                        <input class="form-control pName" name="PatientName" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone *</label>
+                        <input class="form-control pNumber" name="PhoneNumber" maxlength="12" />
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Age *</label>
+                        <input type="number" class="form-control pAge" name="Age" min="1" />
+                    </div>
+
+                    <div class="col-md-8 mb-3">
+                        <label class="form-label">Referred By</label>
+                        <input class="form-control" name="ReferredBy" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= TEST DROPDOWN WITH CHECKBOX ================= -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header fw-bold">🧪 Select Tests</div>
+            <div class="card-body">
+
+                <label class="form-label">Tests *</label>
+
+                <!-- IMPORTANT: NO form-select class here -->
+                <select id="testsSelect"
+                        name="SelectedTestIds"
+                        class="form-control"
+                        multiple>
+                    @foreach (var t in Model.Tests)
+                    {
+                        <option value="@t.TestId"
+                                data-price="@t.DefaultPrice">
+                            @t.TestName
+                            @* - Rs @t.DefaultPrice *@
+                        </option>
+                    }
+                </select>
+                <div class="d-flex gap-2 mt-2">
+                    <button type="button" id="selectAllTests" class="btn btn-sm btn-outline-primary">
+                        Select All
+                    </button>
+                    <button type="button" id="clearAllTests" class="btn btn-sm btn-outline-secondary">
+                        Clear All
+                    </button>
+                </div>
+
+                <div class="mt-3">
+                    <strong>Total Amount:</strong>
+                    <span id="totalAmount" class="fw-bold text-success">Rs 0</span>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <!-- ================= PAYMENT ================= -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header fw-bold">💰 Payment</div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Discount</label>
+                        <input type="number" class="form-control" name="DiscountAmount" value="0" min="0" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Paid Amount</label>
+                        <input type="number" class="form-control" name="PaidAmount" value="0" min="0" />
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-success btn-lg w-100 crtBill">
+                    ✅ Create Bill
+                </button>
+
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+<!-- ================= JS ================= -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        // ================= PHONE FORMAT =================
+        $('.pNumber').on('input', function () {
+            let v = this.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.substring(0, 11);
+            if (v.length > 4) v = v.slice(0, 4) + '-' + v.slice(4);
+            this.value = v;
+        });
+
+        // ================= VALIDATION =================
+        $('.crtBill').on('click', function () {
+
+            const name = $('.pName').val().trim();
+            const phone = $('.pNumber').val().replace(/\D/g, '');
+            const age = $('.pAge').val();
+            const tests = $('#testsSelect').val();
+
+            if (!name) { alert('Patient name is required'); return; }
+            if (phone.length !== 11) { alert('Phone must be 11 digits'); return; }
+            if (!age || age < 1) { alert('Valid age required'); return; }
+            if (!tests || tests.length === 0) { alert('Select at least one test'); return; }
+
+            $('#createBillForm').submit();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            const $tests = $('#testsSelect');
+
+            // Initialize Select2 (NO CHECKBOXES)
+            $tests.select2({
+                placeholder: "Select Tests",
+                closeOnSelect: false,
+                width: '100%'
+            });
+
+            // 💰 Calculate total
+            function calculateTotal() {
+                let total = 0;
+
+                $tests.find('option:selected').each(function () {
+                    total += Number($(this).data('price')) || 0;
+                });
+
+                $('#totalAmount').text(`Rs ${total}`);
+            }
+
+            // 🔄 Unified change handler
+            $tests.on('change', function () {
+                calculateTotal();
+            });
+
+            // ✅ Select All
+            $('#selectAllTests').on('click', function () {
+                const allValues = $tests.find('option').map(function () {
+                    return this.value;
+                }).get();
+
+                $tests.val(allValues).trigger('change');
+            });
+
+            // ❌ Clear All
+            $('#clearAllTests').on('click', function () {
+                $tests.val([]).trigger('change');
+            });
+
+            // 🚀 Initial reset
+            $tests.val([]).trigger('change');
+        });
+    </script>
+}
+
+@* 
+<script>
+    $(document).ready(function () {
+
+            function formatTestOption(option) {
+                if (!option.id) return option.text;
+
+                return $(`
+                    <div class="d-flex align-items-center">
+                        <input type="checkbox" class="form-check-input me-2" />
+                        <span>${option.text}</span>
+                    </div>
+                `);
+            }
+
+            const $tests = $('#testsSelect');
+
+            $tests.select2({
+                placeholder: "Select Tests",
+                closeOnSelect: false,
+                width: '100%',
+                templateResult: formatTestOption,
+                templateSelection: option => option.text,
+                escapeMarkup: m => m
+            });
+
+            // 🔁 Sync checkbox state
+            function syncCheckboxes() {
+                $('.select2-results__option').each(function () {
+                    const data = $(this).data('data');
+                    if (!data || !data.id) return;
+
+                    $(this)
+                        .find('input[type="checkbox"]')
+                        .prop('checked', data.selected);
+                });
+            }
+
+            // 💰 Calculate total
+            function calculateTotal() {
+                let total = 0;
+
+                $tests.find('option:selected').each(function () {
+                    total += parseFloat($(this).data('price')) || 0;
+                });
+
+                $('#totalAmount').text(`Rs ${total}`);
+            }
+
+            // Events
+            $tests.on('select2:open select2:select select2:unselect', function () {
+                syncCheckboxes();
+                calculateTotal();
+            });
+
+            // ✅ Select All
+            $('#selectAllTests').on('click', function () {
+                const allValues = $tests.find('option').map(function () {
+                    return this.value;
+                }).get();
+
+                $tests.val(allValues).trigger('change');
+            });
+
+            // ❌ Clear All
+            $('#clearAllTests').on('click', function () {
+                $tests.val(null).trigger('change');
+            });
+
+            // Initial reset (IMPORTANT)
+            $tests.val(null).trigger('change');
+            calculateTotal();
+        });
+</script>
+ *@

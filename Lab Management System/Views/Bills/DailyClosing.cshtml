@@ -1,0 +1,143 @@
+﻿@model LabManagement.ViewModels.DailyClosingViewModel
+
+@{
+    ViewData["Title"] = "Daily Closing";
+}
+
+<div class="container mt-4">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold">
+            Daily Closing
+            <span class="text-muted fs-6">
+                (@Model.Date.ToString("dd MMM yyyy"))
+            </span>
+        </h3>
+
+        <form method="get" class="d-flex gap-2">
+            <input type="date"
+                   name="date"
+                   value="@Model.Date.ToString("yyyy-MM-dd")"
+                   class="form-control" />
+            <button class="btn btn-primary">
+                View
+            </button>
+        </form>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-primary text-center">
+                <div class="card-body">
+                    <div class="text-muted">Total Bills</div>
+                    <h3 class="fw-bold">@Model.TotalBills</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-success text-center">
+                <div class="card-body">
+                    <div class="text-muted">Cash Received</div>
+                    <h3 class="fw-bold text-success">
+                        Rs @Model.CashReceived.ToString("N0")
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-danger text-center">
+                <div class="card-body">
+                    <div class="text-muted">Credit Given</div>
+                    <h3 class="fw-bold text-danger">
+                        Rs @Model.CreditGiven.ToString("N0")
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-warning text-center">
+                <div class="card-body">
+                    <div class="text-muted">Total Discount</div>
+                    <h3 class="fw-bold text-warning">
+                        Rs @Model.TotalDiscount.ToString("N0")
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- AMOUNT BREAKDOWN -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header fw-bold">
+            Amount Summary
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+
+                <div class="col-md-4">
+                    <div class="text-muted">Gross Amount</div>
+                    <h4 class="fw-bold">
+                        Rs @Model.GrossAmount.ToString("N0")
+                    </h4>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="text-muted">Net Amount</div>
+                    <h4 class="fw-bold text-primary">
+                        Rs @Model.NetAmount.ToString("N0")
+                    </h4>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="text-muted">Difference</div>
+                    <h4 class="fw-bold text-secondary">
+                        Rs @(Model.GrossAmount - Model.NetAmount)
+                    </h4>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- BILL STATUS COUNTS -->
+    <div class="card shadow-sm">
+        <div class="card-header fw-bold">
+            Bill Status Summary
+        </div>
+
+        <div class="card-body">
+            <div class="row text-center">
+
+                <div class="col-md-4">
+                    <div class="text-muted">Paid Bills</div>
+                    <span class="badge bg-success fs-5">
+                        @Model.PaidBills
+                    </span>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="text-muted">Partial Bills</div>
+                    <span class="badge bg-warning fs-5">
+                        @Model.PartialBills
+                    </span>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="text-muted">Unpaid Bills</div>
+                    <span class="badge bg-danger fs-5">
+                        @Model.UnpaidBills
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

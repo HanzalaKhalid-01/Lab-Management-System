@@ -1,0 +1,211 @@
+﻿@model IEnumerable<Lab_Management_System.Models.Bill>
+
+@{
+    ViewData["Title"] = "Bills Index";
+}
+
+<div class="container-fluid mt-3">
+
+    <h3 class="mb-3">Bills</h3>
+
+    <!-- Filters -->
+    <div class="row mb-3 g-2">
+        <div class="col-md-4">
+            <input type="text" id="globalSearch" class="form-control"
+                   placeholder="Search patient by name...">
+        </div>
+
+        <div class="col-md-3">
+            <select id="statusFilter" class="form-select">
+                <option value="">All Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Credit">Credit</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-secondary w-100" onclick="resetFilters()">Reset</button>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle text-center w-100" id="billsTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>Bill No.</th>
+                    <th>Date</th>
+                    <th>Patient</th>
+                    <th>Phone</th>
+                    <th>Tests</th>
+                    <th>Total</th>
+                    <th>Paid</th>
+                    <th>Remaining</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bill in Model)
+                {
+                    var isCredit = bill.RemainingAmount > 0;
+                    <tr class="@(isCredit ? "credit-blink fw-bold" : "")" data-billid="@bill.BillId">
+                        <td class="fw-bold">@bill.BillNumber</td>
+                        <td>@bill.BillDate.ToString("dd MMM yyyy")</td>
+                        <td>@bill.Patient?.FullName</td>
+                        <td>@bill.Patient?.PhoneNumber</td>
+
+                        <td class="tests-col">
+                            @(bill.BillItems != null && bill.BillItems.Any()
+                                ? string.Join(", ", bill.BillItems.Select(x => x.TestNameSnapshot).Distinct())
+                                : "—")
+                        </td>
+
+                        <td class="text-end">Rs @(bill.TotalAmount - bill.DiscountAmount)</td>
+                        <td class="text-end">Rs @bill.PaidAmount.ToString("N0")</td>
+                        <td class="text-end" style="color:@(isCredit ? "red;font-weight:bold;" : "green;")">
+                            Rs @bill.RemainingAmount.ToString("N0")
+                        </td>
+
+                        <td data-status="@(isCredit ? "Credit" : "Paid")">
+                            @if (isCredit)
+                            {
+                                <span class="badge bg-danger">Credit</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Paid</span>
+                            }
+                        </td>
+
+                        <td>
+                            <a asp-action="Print" asp-route-id="@bill.BillId"
+                               target="_blank" class="btn btn-sm btn-outline-dark mb-1 w-100">🖨</a>
+
+                            @if (isCredit)
+                            {
+                                <button class="btn btn-sm btn-outline-success w-100"
+                                        onclick="openReceiveModal(@bill.PatientId)">
+                                    Receive
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="receiveModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Clear Bills</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="receiveModalBody">
+                    Loading...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    table.dataTable th,
+    table.dataTable td {
+        white-space: nowrap;
+        vertical-align: middle;
+        padding: 1rem;
+    }
+
+    .tests-col {
+        white-space: normal !important;
+        word-break: break-word;
+        min-width: 320px;
+    }
+
+    .credit-blink {
+        animation: blinkBg 1.5s infinite;
+    }
+
+    @@keyframes blinkBg {
+        0% {
+            background-color: #ffe5e5;
+        }
+
+        50% {
+            background-color: #ffcccc;
+        }
+
+        100% {
+            background-color: #ffe5e5;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script>
+        let table;
+
+        $(document).ready(function () {
+
+            table = $('#billsTable').DataTable({
+            paging: true,
+            pageLength: 25,
+            ordering: true,
+            info: false,
+            autoWidth: false,
+
+            scrollX: true,
+            scrollY: '60vh',     // takes vertical space
+            scrollCollapse: true,
+
+            fixedHeader: true,
+            fixedColumns: {
+                rightColumns: 1   // 👈 Actions column frozen
+            },
+
+            columnDefs: [
+                { width: 70, targets: 0 },
+                { width: 140, targets: 1 },
+                { width: 180, targets: 2 },
+                { width: 130, targets: 3 },
+                { width: 350, targets: 4 },
+                { width: 110, targets: 5 },
+                { width: 110, targets: 6 },
+                { width: 120, targets: 7 },
+                { width: 90,  targets: 8 },
+                { width: 140, targets: 9 }
+            ]
+        });
+
+            table.columns.adjust();
+
+            $('#globalSearch').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+
+            $('#statusFilter').on('change', function () {
+                table.draw();
+            });
+
+            $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                const selectedStatus = $('#statusFilter').val();
+                if (!selectedStatus) return true;
+
+                const row = table.row(dataIndex).node();
+                const status = $(row).find('td[data-status]').data('status');
+
+                return status === selectedStatus;
+            });
+        });
+
+        function resetFilters() {
+            $('#globalSearch').val('');
+            $('#statusFilter').val('');
+            table.search('').draw();
+        }
+    </script>
+}

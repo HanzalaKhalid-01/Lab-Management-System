@@ -1,0 +1,40 @@
+﻿@model LabManagement.ViewModels.BillingViewModel
+
+<h2>Create Bill</h2>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Patient</label>
+        <select asp-for="PatientId" asp-items="ViewBag.Patients">
+            <option value="">-- Select Patient --</option>
+        </select>
+    </div>
+
+    <h4>Tests</h4>
+    @foreach (var test in ViewBag.Tests)
+    {
+        <div>
+            <input type="checkbox"
+                   name="SelectedTestIds"
+                   value="@test.TestId" />
+            @test.TestName (@test.DefaultPrice)
+        </div>
+    }
+
+    <br />
+    <hr />
+
+    <div>
+        <label>Discount</label>
+        <input asp-for="DiscountAmount" type="number" step="0.01" />
+    </div>
+
+    <div>
+        <label>Paid Amount</label>
+        <input asp-for="PaidAmount" type="number" step="0.01" />
+    </div>
+
+    <button type="submit">Proceed</button>
+
+</form>

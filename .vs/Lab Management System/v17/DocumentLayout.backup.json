@@ -1,12 +1,141 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|c:\\users\\hanza\\desktop\\new folder\\lab management system\\lab management system\\views\\bills\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|solutionrelative:lab management system\\views\\bills\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|c:\\users\\hanza\\desktop\\new folder\\lab management system\\lab management system\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|solutionrelative:lab management system\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|c:\\users\\hanza\\desktop\\new folder\\lab management system\\lab management system\\controllers\\billscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|solutionrelative:lab management system\\controllers\\billscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|c:\\users\\hanza\\desktop\\new folder\\lab management system\\lab management system\\views\\bills\\createfullbill.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|solutionrelative:lab management system\\views\\bills\\createfullbill.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|c:\\users\\hanza\\desktop\\new folder\\lab management system\\lab management system\\viewmodels\\createbillviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|solutionrelative:lab management system\\viewmodels\\createbillviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|c:\\users\\hanza\\desktop\\new folder\\lab management system\\lab management system\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|solutionrelative:lab management system\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|c:\\users\\hanza\\desktop\\new folder\\lab management system\\lab management system\\views\\bills\\_patientunpaidbillspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F4A550B7-4B92-41E1-9A29-DA1F89D3C0CE}|Lab Management System\\Lab Management System.csproj|solutionrelative:lab management system\\views\\bills\\_patientunpaidbillspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CreateBillViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\ViewModels\\CreateBillViewModel.cs",
+              "RelativeDocumentMoniker": "Lab Management System\\ViewModels\\CreateBillViewModel.cs",
+              "ToolTip": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\ViewModels\\CreateBillViewModel.cs",
+              "RelativeToolTip": "Lab Management System\\ViewModels\\CreateBillViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-23T17:41:08.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Lab Management System\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Lab Management System\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T07:14:41.685Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Lab Management System\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Lab Management System\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAowD4AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-03T14:49:42.352Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_PatientUnpaidBillsPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Views\\Bills\\_PatientUnpaidBillsPartial.cshtml",
+              "RelativeDocumentMoniker": "Lab Management System\\Views\\Bills\\_PatientUnpaidBillsPartial.cshtml",
+              "ToolTip": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Views\\Bills\\_PatientUnpaidBillsPartial.cshtml",
+              "RelativeToolTip": "Lab Management System\\Views\\Bills\\_PatientUnpaidBillsPartial.cshtml",
+              "ViewState": "AgIAAAUAAAAAAAAAAIBJwDIAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-03T14:46:06.926Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Views\\Bills\\Index.cshtml",
+              "RelativeDocumentMoniker": "Lab Management System\\Views\\Bills\\Index.cshtml",
+              "ToolTip": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Views\\Bills\\Index.cshtml",
+              "RelativeToolTip": "Lab Management System\\Views\\Bills\\Index.cshtml",
+              "ViewState": "AgIAAJQAAAAAAAAAAAAswLYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-03T14:03:01.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CreateFullBill.cshtml",
+              "DocumentMoniker": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Views\\Bills\\CreateFullBill.cshtml",
+              "RelativeDocumentMoniker": "Lab Management System\\Views\\Bills\\CreateFullBill.cshtml",
+              "ToolTip": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Views\\Bills\\CreateFullBill.cshtml",
+              "RelativeToolTip": "Lab Management System\\Views\\Bills\\CreateFullBill.cshtml",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAcwDUAAABOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-01T18:49:56.264Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BillsController.cs",
+              "DocumentMoniker": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Controllers\\BillsController.cs",
+              "RelativeDocumentMoniker": "Lab Management System\\Controllers\\BillsController.cs",
+              "ToolTip": "C:\\Users\\hanza\\Desktop\\New folder\\Lab Management System\\Lab Management System\\Controllers\\BillsController.cs",
+              "RelativeToolTip": "Lab Management System\\Controllers\\BillsController.cs",
+              "ViewState": "AgIAAJMBAAAAAAAAAAAmwJ0BAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-15T16:27:15.976Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,121 @@
+﻿@model IEnumerable<LabManagement.ViewModels.PatientCreditViewModel>
+
+<style>
+    .credit-row {
+        background-color: #ffe5e5;
+        color: #b30000;
+        font-weight: bold;
+    }
+
+    .warning-icon {
+        font-size: 18px;
+    }
+
+</style>
+
+<h2>Patient Credit Dashboard</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Phone</th>
+            <th>Total Bills</th>
+            <th>Total Credit</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="credit-row">
+                @* <td>@item.PatientName</td> *@
+                <td>
+                    <a href="#"
+                       onclick="loadPatientBills(@item.PatientId, '@item.PatientName')">
+                        @item.PatientName
+                    </a>
+                </td>
+
+                <td>@item.PhoneNumber</td>
+                <td>@item.TotalBills</td>
+                <td>@item.TotalCredit.ToString("N2")</td>
+                <td>
+                    <span class="warning-icon">⚠️ Pending</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="creditModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pending Bills</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" id="creditModalBody">
+                Loading...
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadPatientBills(patientId, patientName) {
+        document.querySelector('#creditModal .modal-title').innerText =
+            'Pending Bills - ' + patientName;
+
+        fetch(`/Bills/PatientUnpaidBillsPartial?patientId=${patientId}`)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('creditModalBody').innerHTML = html;
+
+                var modal = new bootstrap.Modal(
+                    document.getElementById('creditModal')
+                );
+                modal.show();
+            });
+    }
+
+    function receivePayment(billId) {
+        const input = document.getElementById('pay_' + billId);
+        const amount = parseFloat(input.value);
+
+        if (!amount || amount <= 0) {
+            alert('Enter valid amount');
+            return;
+        }
+
+        fetch('/Bills/ReceivePayment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                billId: billId,
+                amount: amount
+            })
+        })
+        .then(res => {
+            if (!res.ok) {
+                return res.text().then(err => { throw err; });
+            }
+            return res;
+        })
+        .then(() => {
+            // Reload modal content after payment
+            document.querySelector('#creditModalBody').innerHTML = 'Refreshing...';
+
+            // Re-load unpaid bills
+            const title = document.querySelector('#creditModal .modal-title').innerText;
+            const patientId = title.match(/\d+/) ? title.match(/\d+/)[0] : null;
+
+            location.reload(); // safest & cleanest for now
+        })
+        .catch(err => alert(err));
+    }
+</script>
+

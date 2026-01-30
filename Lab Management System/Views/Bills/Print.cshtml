@@ -1,0 +1,86 @@
+﻿@model Lab_Management_System.Models.Bill
+@{
+    Layout = "_PrintLayout";
+}
+
+<div class="center">
+    <strong>
+        NEW AMERICAN DIAGNOSTIC CENTER, <br />
+        PATHALOGY LABORATORY & ULTRASOUND MEDICAL CENTER
+    </strong><br />
+    Latifabad, Hyderabad<br />
+    0333-2639947
+</div>
+
+@if (Model.RemainingAmount > 0)
+{
+    <hr />
+    <div class="center" style="font-weight:bold;">
+        *** CREDIT PENDING ***
+        <br />
+        Remaining: Rs @Model.RemainingAmount.ToString("N0")
+    </div>
+}
+    <hr />
+
+<table>
+    <tr>
+        <td>Bill #:</td>
+        <td class="right">@Model.BillYear-@Model.BillMonth.ToString("D2")-@Model.BillNumber.ToString("D3")</td>
+    </tr>
+    <tr>
+        <td>Date</td>
+        <td class="right">@Model.BillDate.ToString("dd/MM/yyyy")</td>
+    </tr>
+    <tr>
+        <td>Patient</td>
+        <td class="right">@Model.Patient?.FullName</td>
+    </tr>
+</table>
+
+<hr />
+
+<table>
+    @foreach (var item in Model.BillItems)
+    {
+        <tr>
+            <td>@item.TestNameSnapshot</td>
+            <td class="right">@item.TestPriceSnapshot.ToString("N0")</td>
+        </tr>
+    }
+</table>
+
+<hr />
+
+<table>
+    <tr>
+        <td>Total</td>
+        <td class="right">@Model.TotalAmount.ToString("N0")</td>
+    </tr>
+    <tr>
+        <td>Discount</td>
+        <td class="right">@Model.DiscountAmount.ToString("N0")</td>
+    </tr>
+    <tr>
+        <td>Paid</td>
+        <td class="right">@Model.PaidAmount.ToString("N0")</td>
+    </tr>
+    <tr>
+        <td><strong>Balance</strong></td>
+        <td class="right"><strong>@Model.RemainingAmount.ToString("N0")</strong></td>
+    </tr>
+</table>
+
+<hr />
+
+<div class="center">
+    Thank you<br />
+    Please collect report
+</div>
+
+<script>
+    window.onload = function () {
+        window.print();
+        setTimeout(() => window.close(), 500);
+    };
+</script>
