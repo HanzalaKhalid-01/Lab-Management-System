@@ -4,7 +4,17 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services
+        .AddControllersWithViews()
+        .AddRazorRuntimeCompilation();
+}
+else
+{
+    builder.Services.AddControllersWithViews();
+}
+
 
 builder.Services.AddDbContext<LabManagementDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

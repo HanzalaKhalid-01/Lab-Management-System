@@ -25,6 +25,7 @@ namespace Lab_Management_System.Controllers
         {
             // Load Bills with Patient and BillItems
             var bills = await _context.Bills
+                .Where(b => b.IsActive)
                 .Include(b => b.Patient)
                 .Include(b => b.BillItems)
                 .OrderByDescending(b => b.BillDate) // optional: newest first
@@ -128,7 +129,8 @@ namespace Lab_Management_System.Controllers
                 PaidAmount = model.PaidAmount,
                 RemainingAmount = remaining,
                 PaymentStatus = status,
-                IsLocked = false
+                IsLocked = false,
+                IsActive = true
             };
 
             _context.Bills.Add(bill);
@@ -213,32 +215,30 @@ namespace Lab_Management_System.Controllers
             {
                 return NotFound();
             }
-
-            var bill = await _context.Bills
-                .Include(b => b.Patient)
-                .FirstOrDefaultAsync(m => m.BillId == id);
-            if (bill == null)
-            {
-                return NotFound();
-            }
-
-            return View(bill);
-        }
-
-        // POST: Bills/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
             var bill = await _context.Bills.FindAsync(id);
             if (bill != null)
             {
-                _context.Bills.Remove(bill);
+                bill.IsActive = false; // soft delete
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
+
+        // POST: Bills/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var bill = await _context.Bills.FindAsync(id);
+        //    if (bill != null)
+        //    {
+        //        _context.Bills.Remove(bill);
+        //    }
+
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool BillExists(int id)
         {
@@ -313,7 +313,7 @@ namespace Lab_Management_System.Controllers
         public IActionResult PatientUnpaidBillsPartial(int patientId)
         {
             var bills = _context.Bills
-                .Include(b => b.BillItems)   // ✅ REQUIRED
+                .Include(b => b.BillItems)  
                 .Where(b => b.PatientId == patientId && b.RemainingAmount > 0)
                 .OrderByDescending(b => b.BillDate)
                 .ToList();
@@ -402,7 +402,8 @@ namespace Lab_Management_System.Controllers
                         PhoneNumber = model.PhoneNumber,
                         Gender = model.Gender,
                         Age = model.Age,
-                        ReferredBy = model.ReferredBy
+                        ReferredBy = model.ReferredBy,
+                        IsActive = true,
                     };
 
                     _context.Patients.Add(patient);

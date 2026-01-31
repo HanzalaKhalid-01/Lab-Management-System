@@ -1,59 +1,107 @@
 ﻿@model IEnumerable<Lab_Management_System.Models.Test>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tests";
 }
 
-<h1>Index</h1>
+<div class="container-fluid mt-4">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TestName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DefaultPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TestName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DefaultPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TestId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TestId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TestId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Laboratory Tests</h3>
+        <a asp-action="Create" class="btn btn-primary">
+            + Add New Test
+        </a>
+    </div>
+
+    <!-- Success Message -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Tests Table -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+
+            @if (!Model.Any())
+            {
+                <div class="p-4 text-center text-muted">
+                    No tests have been created yet.
+                </div>
+            }
+            else
+            {
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Test Name</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">
+                                    @item.TestName
+                                </td>
+
+                                <td>
+                                    Rs.@item.DefaultPrice.ToString("N2")
+                                </td>
+
+                                <td class="text-muted">
+                                    @item.Description
+                                </td>
+
+                                <td>
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @item.CreatedAt.ToString("dd MMM yyyy")
+                                </td>
+
+                                <td class="text-end">
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.TestId"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Edit
+                                    </a>
+
+                                    @* <a asp-action="Details"
+                                       asp-route-id="@item.TestId"
+                                       class="btn btn-sm btn-outline-info">
+                                        Details
+                                    </a> *@
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.TestId"
+                                       class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+        </div>
+    </div>
+</div>

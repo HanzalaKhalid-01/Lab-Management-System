@@ -45,24 +45,38 @@ namespace Lab_Management_System.Controllers
         // GET: Tests/Create
         public IActionResult Create()
         {
-            return View();
+            // Set defaults for the form
+            var model = new Test
+            {
+                IsActive = true
+            };
+
+            return View(model);
         }
 
+
         // POST: Tests/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TestId,TestName,DefaultPrice,Description,IsActive,CreatedAt")] Test test)
+        public async Task<IActionResult> Create([Bind("TestName,DefaultPrice,Description")] Test test)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(test);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(test);
             }
-            return View(test);
+
+            // System-controlled fields
+            test.IsActive = true;
+            test.CreatedAt = DateTime.UtcNow;
+
+            _context.Tests.Add(test);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Test created successfully.";
+
+            return RedirectToAction(nameof(Index));
         }
+
 
         // GET: Tests/Edit/5
         public async Task<IActionResult> Edit(int? id)

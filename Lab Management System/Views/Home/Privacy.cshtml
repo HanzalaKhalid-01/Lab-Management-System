@@ -1,6 +1,115 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Contact Developer";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<style>
+    .contact-container {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 20px;
+    }
+
+    .contact-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+        .contact-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .contact-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+    .contact-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        padding: 30px;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+    .contact-label {
+        width: 140px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .contact-value a {
+        color: #0d6efd;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+        .contact-value a:hover {
+            text-decoration: underline;
+        }
+
+    .contact-footer {
+        text-align: center;
+        margin-top: 30px;
+        color: #777;
+        font-size: 0.95rem;
+    }
+</style>
+
+<div class="contact-container">
+    <div class="contact-header">
+        <h1>Contact Developer</h1>
+        <p>Feel free to reach out for collaboration, freelance work, or technical discussions</p>
+    </div>
+
+    <div class="contact-card">
+        <div class="contact-item">
+            <div class="contact-label">Email</div>
+            <div class="contact-value">
+                <a href="mailto:hanzalabinkhalid@gmail.com">
+                    hanzalabinkhalid@gmail.com
+                </a>
+            </div>
+        </div>
+
+        <div class="contact-item">
+            <div class="contact-label">Phone</div>
+            <div class="contact-value">
+                <a href="tel:03352411104">+92 335 2411104</a>
+            </div>
+        </div>
+
+        <div class="contact-item">
+            <div class="contact-label">LinkedIn</div>
+            <div class="contact-value">
+                <a href="https://www.linkedin.com/in/hanzala-khalid-dev/" target="_blank">
+                    linkedin.com/in/hanzala-khalid-dev
+                </a>
+            </div>
+        </div>
+
+        <div class="contact-item">
+            <div class="contact-label">GitHub</div>
+            <div class="contact-value">
+                <a href="https://github.com/HanzalaKhalid-01" target="_blank">
+                    github.com/HanzalaKhalid-01
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-footer">
+        © @DateTime.Now.Year — Designed & Developed by Hanzala Khalid
+    </div>
+</div>

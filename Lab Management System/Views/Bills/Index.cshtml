@@ -1,39 +1,44 @@
 ﻿@model IEnumerable<Lab_Management_System.Models.Bill>
 
 @{
-    ViewData["Title"] = "Bills Index";
+    ViewData["Title"] = "All Bills";
 }
 
 <div class="container-fluid mt-3">
 
-    <h3 class="mb-3">Bills</h3>
+    <h3 class="mb-3 fw-bold text-primary">All Bills</h3>
 
     <!-- Filters -->
-    <div class="row mb-3 g-2">
+    <div class="row mb-3 g-2 align-items-end">
         <div class="col-md-4">
+            <label class="form-label fw-semibold">Search Patient</label>
             <input type="text" id="globalSearch" class="form-control"
-                   placeholder="Search patient by name...">
+                   placeholder="Search by patient name or phone">
         </div>
 
         <div class="col-md-3">
+            <label class="form-label fw-semibold">Status</label>
             <select id="statusFilter" class="form-select">
-                <option value="">All Status</option>
+                <option value="">All</option>
                 <option value="Paid">Paid</option>
                 <option value="Credit">Credit</option>
             </select>
         </div>
 
         <div class="col-md-2">
-            <button class="btn btn-secondary w-100" onclick="resetFilters()">Reset</button>
+            <button class="btn btn-outline-secondary w-100" onclick="resetFilters()">
+                Reset
+            </button>
         </div>
     </div>
 
     <!-- Table -->
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle text-center w-100" id="billsTable">
-            <thead class="table-dark">
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle text-center w-100" id="billsTable">
+
+            <thead class="table-light">
                 <tr>
-                    <th>Bill No.</th>
+                    <th>Bill No</th>
                     <th>Date</th>
                     <th>Patient</th>
                     <th>Phone</th>
@@ -45,12 +50,14 @@
                     <th>Actions</th>
                 </tr>
             </thead>
+
             <tbody>
                 @foreach (var bill in Model)
                 {
                     var isCredit = bill.RemainingAmount > 0;
-                    <tr class="@(isCredit ? "credit-blink fw-bold" : "")" data-billid="@bill.BillId">
-                        <td class="fw-bold">@bill.BillNumber</td>
+
+                    <tr class="@(isCredit ? "credit-blink fw-semibold" : "")">
+                        <td>@bill.BillMonth.ToString("D2")-@bill.BillNumber.ToString("D3")</td>
                         <td>@bill.BillDate.ToString("dd MMM yyyy")</td>
                         <td>@bill.Patient?.FullName</td>
                         <td>@bill.Patient?.PhoneNumber</td>
@@ -61,13 +68,19 @@
                                 : "—")
                         </td>
 
-                        <td class="text-end">Rs @(bill.TotalAmount - bill.DiscountAmount)</td>
-                        <td class="text-end">Rs @bill.PaidAmount.ToString("N0")</td>
-                        <td class="text-end" style="color:@(isCredit ? "red;font-weight:bold;" : "green;")">
+                        <td class="text-center">
+                            Rs @(bill.TotalAmount - bill.DiscountAmount)
+                        </td>
+
+                        <td class="text-end">
+                            Rs @bill.PaidAmount.ToString("N0")
+                        </td>
+
+                        <td class="text-end fw-bold @(isCredit ? "text-danger" : "text-success")">
                             Rs @bill.RemainingAmount.ToString("N0")
                         </td>
 
-                        <td data-status="@(isCredit ? "Credit" : "Paid")">
+                        <td>
                             @if (isCredit)
                             {
                                 <span class="badge bg-danger">Credit</span>
@@ -78,71 +91,95 @@
                             }
                         </td>
 
+                        <!-- ACTIONS: PRINT + DELETE ONLY -->
                         <td>
-                            <a asp-action="Print" asp-route-id="@bill.BillId"
-                               target="_blank" class="btn btn-sm btn-outline-dark mb-1 w-100">🖨</a>
+                            <a asp-action="Print"
+                               asp-route-id="@bill.BillId"
+                               target="_blank"
+                               class="btn btn-sm btn-outline-dark w-50">
+                                Print
+                            </a>
 
-                            @if (isCredit)
-                            {
-                                <button class="btn btn-sm btn-outline-success w-100"
-                                        onclick="openReceiveModal(@bill.PatientId)">
-                                    Receive
-                                </button>
-                            }
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger w-50"
+                                    onclick="if(confirm('Are you sure you want to delete this bill?')) { window.location='@Url.Action("Delete", "Bills", new { id = bill.BillId })'; }">
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 }
             </tbody>
-        </table>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="receiveModal" tabindex="-1">
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Clear Bills</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="receiveModalBody">
-                    Loading...
-                </div>
-            </div>
-        </div>
+        </table>
     </div>
 </div>
 
+
 <style>
-    table.dataTable th,
-    table.dataTable td {
-        white-space: nowrap;
+    /* Table spacing */
+    table th, table td {
+        padding: 0.9rem;
         vertical-align: middle;
-        padding: 1rem;
+        white-space: nowrap;
     }
 
     .tests-col {
         white-space: normal !important;
-        word-break: break-word;
         min-width: 320px;
     }
 
-    .credit-blink {
-        animation: blinkBg 1.5s infinite;
+    /* Light medical UI */
+    #billsTable thead th {
+        background-color: #f1f5f9;
+        color: #0f172a;
+        font-weight: 700;
+        border-bottom: 2px solid #cbd5e1;
     }
 
-    @@keyframes blinkBg {
+    #billsTable tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    #billsTable td, #billsTable th {
+        border-color: #e2e8f0;
+    }
+
+    /* ===============================
+          CREDIT ROW – ALERT STYLE
+       =============================== */
+
+    table.dataTable tbody tr.credit-blink td:first-child,
+    table.DTFC_Cloned tbody tr.credit-blink td:first-child {
+        border-left: 6px solid #dc2626; /* solid alert red */
+    }
+
+    /* soft red breathing background */
+    table.dataTable tbody tr.credit-blink td,
+    table.DTFC_Cloned tbody tr.credit-blink td {
+        background: rgba(220, 38, 38, 0.08);
+        animation: creditAlert 1.6s ease-in-out infinite;
+    }
+
+    @@keyframes creditAlert {
         0% {
-            background-color: #ffe5e5;
+            background-color: rgba(220, 38, 38, 0.06);
         }
 
         50% {
-            background-color: #ffcccc;
+            background-color: rgba(220, 38, 38, 0.18);
         }
 
         100% {
-            background-color: #ffe5e5;
+            background-color: rgba(220, 38, 38, 0.06);
         }
     }
+
+
+    table.dataTable tbody tr.credit-blink td {
+        position: relative;
+        z-index: 2;
+    }
+
 </style>
 
 @section Scripts {
@@ -150,38 +187,32 @@
         let table;
 
         $(document).ready(function () {
-
             table = $('#billsTable').DataTable({
-            paging: true,
-            pageLength: 25,
-            ordering: true,
-            info: false,
-            autoWidth: false,
+                dom: 'rtip',
+                paging: true,
+                pageLength: 25,
+                ordering: true,
+                info: false,
+                autoWidth: false,
+                scrollX: true,
+                scrollY: '60vh',
+                scrollCollapse: true,
+                fixedHeader: true,
+                fixedColumns: { rightColumns: 1 },
 
-            scrollX: true,
-            scrollY: '60vh',     // takes vertical space
-            scrollCollapse: true,
-
-            fixedHeader: true,
-            fixedColumns: {
-                rightColumns: 1   // 👈 Actions column frozen
-            },
-
-            columnDefs: [
-                { width: 70, targets: 0 },
-                { width: 140, targets: 1 },
-                { width: 180, targets: 2 },
-                { width: 130, targets: 3 },
-                { width: 350, targets: 4 },
-                { width: 110, targets: 5 },
-                { width: 110, targets: 6 },
-                { width: 120, targets: 7 },
-                { width: 90,  targets: 8 },
-                { width: 140, targets: 9 }
-            ]
-        });
-
-            table.columns.adjust();
+                columnDefs: [
+                    { width: 80, targets: 0 },
+                    { width: 140, targets: 1 },
+                    { width: 180, targets: 2 },
+                    { width: 130, targets: 3 },
+                    { width: 350, targets: 4 },
+                    { width: 110, targets: 5 },
+                    { width: 110, targets: 6 },
+                    { width: 120, targets: 7 },
+                    { width: 110, targets: 8 },
+                    { width: 130, targets: 9 }
+                ]
+            });
 
             $('#globalSearch').on('keyup', function () {
                 table.search(this.value).draw();
@@ -191,14 +222,10 @@
                 table.draw();
             });
 
-            $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-                const selectedStatus = $('#statusFilter').val();
-                if (!selectedStatus) return true;
-
-                const row = table.row(dataIndex).node();
-                const status = $(row).find('td[data-status]').data('status');
-
-                return status === selectedStatus;
+            $.fn.dataTable.ext.search.push(function (settings, data) {
+                const selected = $('#statusFilter').val();
+                if (!selected) return true;
+                return data[8].includes(selected);
             });
         });
 
@@ -207,5 +234,6 @@
             $('#statusFilter').val('');
             table.search('').draw();
         }
+
     </script>
 }

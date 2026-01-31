@@ -14,6 +14,7 @@ public partial class Test
     [StringLength(150)]
     public string TestName { get; set; } = null!;
 
+    [Range(0, double.MaxValue, ErrorMessage = "Price must be positive")]
     [Column(TypeName = "decimal(10, 2)")]
     public decimal DefaultPrice { get; set; }
 

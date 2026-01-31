@@ -23,5 +23,6 @@ namespace Lab_Management_System.Models
         public ICollection<Payment> Payments { get; set; } // Added this property  
         public decimal BalanceAmount { get; set; }
         public DateTime CreatedAt { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

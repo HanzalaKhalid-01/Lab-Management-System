@@ -1,43 +1,80 @@
 ﻿@model Lab_Management_System.Models.Test
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add Test";
 }
 
-<h1>Create</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
 
-<h4>Test</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TestName" class="control-label"></label>
-                <input asp-for="TestName" class="form-control" />
-                <span asp-validation-for="TestName" class="text-danger"></span>
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Add New Test</h4>
+                    <small>Create a New Laboratory Test</small>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="Create" method="post" novalidate>
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger"
+                             role="alert"></div>
+
+                        <!-- Test Name -->
+                        <div class="mb-3">
+                            <label asp-for="TestName" class="form-label fw-semibold"></label>
+                            <input asp-for="TestName"
+                                   class="form-control" autofocus
+                                   placeholder="e.g. Complete Blood Count" />
+                            <span asp-validation-for="TestName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Default Price -->
+                        <div class="mb-3">
+                            <label asp-for="DefaultPrice" class="form-label fw-semibold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rs.</span>
+                                <input asp-for="DefaultPrice"
+                                       class="form-control"
+                                       placeholder="0.00" />
+                            </div>
+                            <span asp-validation-for="DefaultPrice" class="text-danger"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Description"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Optional test details..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                ← Back to List
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+                                Save Test
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="DefaultPrice" class="control-label"></label>
-                <input asp-for="DefaultPrice" class="form-control" />
-                <span asp-validation-for="DefaultPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
